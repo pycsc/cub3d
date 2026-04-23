@@ -29,20 +29,52 @@ int	is_config_line(char *line)
 	return (0);
 }
 
-static int	set_tex(char **tex, char *line)
+static int	get_rgb(char *line)
 {
-	if (*tex)
-		return (1);
-	*tex = ft_strdup(line + 3);
-	if (!(*tex))
-		return (1);
-	return (0);
+	char	**tab;
+	int		rgb[3];
+	int		i;
+
+	tab = ft_split(line, ',');
+	if (!tab)
+		return (-1);
+	i = 0;
+	while (tab[i])
+	{
+		if (i < 3)
+			rgb[i] = ft_atoi(tab[i]);
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	if (i != 3)
+		return (-1);
+	return (rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
 }
 
 static int	set_color(int *col, char *line)
 {
-	(void)col;
-	(void)line;
+	int	val;
+
+	val = get_rgb(line + 2);
+	if (val == -1)
+		return (1);
+	*col = val;
+	return (0);
+}
+
+static int	set_tex(char **tex, char *line)
+{
+	char	*tmp;
+
+	if (*tex)
+		return (1);
+	tmp = ft_strdup(line + 3);
+	if (!tmp)
+		return (1);
+	if (tmp[ft_strlen(tmp) - 1] == '\n')
+		tmp[ft_strlen(tmp) - 1] = '\0';
+	*tex = tmp;
 	return (0);
 }
 
