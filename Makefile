@@ -19,8 +19,25 @@ ARCH := $(shell uname -m)
 
 GNL_DIR = libs/get_next_line
 GNL_LIB = $(GNL_DIR)/get_next_line.a
+LIBFT_DIR = libs/libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-# ... (rest of Makefile variables)
+ifeq ($(OS), Linux)
+    MLX_DIR = libs/minilibx-linux
+    MLX_LIB = $(MLX_DIR)/libmlx.a
+    MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
+else ifeq ($(OS), Darwin)
+    ifeq ($(ARCH), arm64)
+        MLX_DIR = libs/minilibx-mms
+    else
+        MLX_DIR = libs/minilibx-opengl
+    endif
+    MLX_LIB = $(MLX_DIR)/libmlx.a
+    MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+endif
+
+SRCS = cub3d.c parsing/scene_parser.c parsing/parser_utils.c parsing/map_parser.c
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
