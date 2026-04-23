@@ -11,15 +11,16 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <errno.h>
 
 /**
- * parse_scene - Opens and initiates reading of the .cub file.
+ * parse_scene - Reads and parses the .cub file configuration.
  * @file: Path to the .cub file.
  * @data: Pointer to the main project structure.
  *
  * Return: 0 on success, non-zero on failure.
  */
-int	parse_scene(char *file, void *data)
+int	parse_scene(char *file, t_data *data)
 {
 	int	fd;
 
@@ -29,7 +30,11 @@ int	parse_scene(char *file, void *data)
 		perror("Error opening file");
 		return (1);
 	}
-	(void)data;
+	data->map = NULL;
+	data->config.no_tex = NULL;
+	data->config.so_tex = NULL;
+	data->config.we_tex = NULL;
+	data->config.ea_tex = NULL;
 	close(fd);
 	return (0);
 }
