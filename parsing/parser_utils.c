@@ -29,16 +29,36 @@ int	is_config_line(char *line)
 	return (0);
 }
 
-/**
- * parse_line - Parses a single configuration line.
- * @line: The line to parse.
- * @data: Pointer to the main project structure.
- *
- * Return: 0 on success, 1 on error.
- */
+static int	set_tex(char **tex, char *line)
+{
+	if (*tex)
+		return (1);
+	*tex = ft_strdup(line + 3);
+	if (!(*tex))
+		return (1);
+	return (0);
+}
+
+static int	set_color(int *col, char *line)
+{
+	(void)col;
+	(void)line;
+	return (0);
+}
+
 int	parse_line(char *line, t_data *data)
 {
-	(void)line;
-	(void)data;
+	if (!strncmp(line, "NO ", 3))
+		return (set_tex(&data->config.no_tex, line));
+	if (!strncmp(line, "SO ", 3))
+		return (set_tex(&data->config.so_tex, line));
+	if (!strncmp(line, "WE ", 3))
+		return (set_tex(&data->config.we_tex, line));
+	if (!strncmp(line, "EA ", 3))
+		return (set_tex(&data->config.ea_tex, line));
+	if (!strncmp(line, "F ", 2))
+		return (set_color(&data->config.floor_col, line));
+	if (!strncmp(line, "C ", 2))
+		return (set_color(&data->config.ceiling_col, line));
 	return (0);
 }
