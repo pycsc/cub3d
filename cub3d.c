@@ -13,19 +13,32 @@
 #include "cub3d.h"
 #include "mlx.h"
 
+static void	print_data(t_data *data)
+{
+	int	i;
+
+	printf("NO: %s\n", data->config.no_tex);
+	printf("SO: %s\n", data->config.so_tex);
+	printf("WE: %s\n", data->config.we_tex);
+	printf("EA: %s\n", data->config.ea_tex);
+	printf("Floor: %d\n", data->config.floor_col);
+	printf("Ceiling: %d\n", data->config.ceiling_col);
+	if (data->map)
+	{
+		i = 0;
+		while (data->map[i])
+			printf("%s\n", data->map[i++]);
+	}
+}
+
 int	main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*win;
+	t_data	data;
 
-	(void)argc;
-	(void)argv;
-	mlx = mlx_init();
-	if (!mlx)
+	if (argc != 2)
 		return (1);
-	win = mlx_new_window(mlx, 800, 600, "cub3D");
-	if (!win)
+	if (parse_scene(argv[1], &data))
 		return (1);
-	mlx_loop(mlx);
+	print_data(&data);
 	return (0);
 }
