@@ -42,9 +42,20 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+}	t_player;
+
 typedef struct s_data
 {
 	t_config	config;
+	t_player	player;
 	char		**map;
 	t_list		*map_list;
 	void		*mlx;
