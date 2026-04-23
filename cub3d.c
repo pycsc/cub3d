@@ -13,22 +13,18 @@
 #include "cub3d.h"
 #include "mlx.h"
 
-static void	print_data(t_data *data)
+int	close_window(t_data *data)
 {
-	int	i;
+	(void)data;
+	exit(0);
+	return (0);
+}
 
-	printf("NO: %s\n", data->config.no_tex);
-	printf("SO: %s\n", data->config.so_tex);
-	printf("WE: %s\n", data->config.we_tex);
-	printf("EA: %s\n", data->config.ea_tex);
-	printf("Floor: %d\n", data->config.floor_col);
-	printf("Ceiling: %d\n", data->config.ceiling_col);
-	if (data->map)
-	{
-		i = 0;
-		while (data->map[i])
-			printf("%s\n", data->map[i++]);
-	}
+int	key_hook(int keycode, t_data *data)
+{
+	if (keycode == 53)
+		close_window(data);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -39,6 +35,14 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_scene(argv[1], &data))
 		return (1);
-	print_data(&data);
+	data.mlx = mlx_init();
+	if (!data.mlx)
+		return (1);
+	data.win = mlx_new_window(data.mlx, 800, 600, "cub3D");
+	if (!data.win)
+		return (1);
+	mlx_hook(data.win, 17, 0, close_window, &data);
+	mlx_key_hook(data.win, key_hook, &data);
+	mlx_loop(data.mlx);
 	return (0);
 }
