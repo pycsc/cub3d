@@ -21,6 +21,8 @@
 # include <sys/time.h>
 # include <string.h>
 
+# include "libft.h"
+
 typedef struct s_config
 {
 	char	*no_tex;
@@ -35,6 +37,7 @@ typedef struct s_data
 {
 	t_config	config;
 	char		**map;
+	t_list		*map_list;
 	void		*mlx;
 	void		*win;
 }	t_data;
