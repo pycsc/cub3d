@@ -37,7 +37,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*res;
 	size_t	len1;
@@ -49,7 +49,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	res = malloc(len1 + ft_strlen(s2) + 1);
 	if (!res)
 	{
-		free(s1);
+		free((void *)s1);
 		return (NULL);
 	}
 	i = 0;
@@ -61,6 +61,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (*s2)
 		res[i++] = *s2++;
 	res[i] = '\0';
-	free(s1);
+	free((void *)s1);
 	return (res);
 }
