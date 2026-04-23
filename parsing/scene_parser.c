@@ -30,28 +30,23 @@ int	parse_scene(char *file, t_data *data)
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-	{
-		perror("Error opening file");
-		return (1);
-	}
+		return (perror("Error opening file"), 1);
 	data->map = NULL;
-	data->config.no_tex = NULL;
-	data->config.so_tex = NULL;
-	data->config.we_tex = NULL;
-	data->config.ea_tex = NULL;
+	data->map_list = NULL;
+	ft_memset(&data->config, 0, sizeof(t_config));
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (parse_line(line, data))
-		{
-			free(line);
-			close(fd);
-			return (1);
-		}
+		if (is_config_line(line))
+			parse_line(line, data);
+		else if (is_map_line(line))
+			add_map_line(line, data);
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (lst_to_array(data))
+		return (1);
 	return (0);
 }
 
