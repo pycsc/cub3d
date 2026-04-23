@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "get_next_line.h"
 #include <errno.h>
 
 int	parse_line(char *line, t_data *data);
@@ -38,8 +39,18 @@ int	parse_scene(char *file, t_data *data)
 	data->config.so_tex = NULL;
 	data->config.we_tex = NULL;
 	data->config.ea_tex = NULL;
-	// Simple line-by-line reading logic (placeholder for actual GNL)
-	// For now, iterate and process lines
+	line = get_next_line(fd);
+	while (line)
+	{
+		if (parse_line(line, data))
+		{
+			free(line);
+			close(fd);
+			return (1);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
 	close(fd);
 	return (0);
 }
