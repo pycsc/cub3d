@@ -33,6 +33,15 @@ typedef struct s_config
 	int		ceiling_col;
 }	t_config;
 
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
+
 typedef struct s_data
 {
 	t_config	config;
@@ -40,6 +49,7 @@ typedef struct s_data
 	t_list		*map_list;
 	void		*mlx;
 	void		*win;
+	t_img		img;
 }	t_data;
 
 int	parse_scene(char *file, t_data *data);
