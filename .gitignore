@@ -1,0 +1,4 @@
+*.abi.json
+*.swiftdoc
+*.swiftmodule
+*.swiftsourceinfo
