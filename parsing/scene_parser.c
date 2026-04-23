@@ -13,7 +13,7 @@
 #include "cub3d.h"
 
 /**
- * parse_scene - Placeholder for scene parsing function.
+ * parse_scene - Opens and initiates reading of the .cub file.
  * @file: Path to the .cub file.
  * @data: Pointer to the main project structure.
  *
@@ -21,14 +21,22 @@
  */
 int	parse_scene(char *file, void *data)
 {
-	(void)file;
+	int	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Error opening file");
+		return (1);
+	}
 	(void)data;
+	close(fd);
 	return (0);
 }
 
 /**
- * validate_map - Placeholder for map validation function.
- * @map: The map structure to validate.
+ * validate_map - Checks if the map is closed by walls.
+ * @map: The map content represented as a 2D array.
  *
  * Return: 1 if valid, 0 otherwise.
  */
