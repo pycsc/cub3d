@@ -52,6 +52,7 @@ $(GNL_LIB):
 	@make -C $(GNL_DIR) bonus
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB)
+	@cp $(MLX_LIB) .
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl $(MLX_FLAGS) -o $(NAME)
 
 %.o: %.c
