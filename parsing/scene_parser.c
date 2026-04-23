@@ -6,13 +6,11 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/08 06:25:19 by lucas                  ##+              */
-/*    Updated: 2026/04/08 06:25:19 by lucas                 #+                */
+/*    Updated: 2026/04/23 17:45:06 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* Scene parser for .cub files */
-
-#include "../include/cub3d.h"
+#include "cub3d.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
