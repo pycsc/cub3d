@@ -13,6 +13,8 @@
 #include "cub3d.h"
 #include <errno.h>
 
+int	parse_line(char *line, t_data *data);
+
 /**
  * parse_scene - Reads and parses the .cub file configuration.
  * @file: Path to the .cub file.
@@ -22,7 +24,8 @@
  */
 int	parse_scene(char *file, t_data *data)
 {
-	int	fd;
+	int		fd;
+	char	*line;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -35,6 +38,8 @@ int	parse_scene(char *file, t_data *data)
 	data->config.so_tex = NULL;
 	data->config.we_tex = NULL;
 	data->config.ea_tex = NULL;
+	// Simple line-by-line reading logic (placeholder for actual GNL)
+	// For now, iterate and process lines
 	close(fd);
 	return (0);
 }
