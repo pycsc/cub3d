@@ -37,7 +37,7 @@ else ifeq ($(OS), Darwin)
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 endif
 
-SRCS = cub3d.c parsing/scene_parser.c parsing/parser_utils.c parsing/map_parser.c
+SRCS = cub3d.c parsing/scene_parser.c parsing/parser_utils.c parsing/map_parser.c engine/raycasting_engine.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

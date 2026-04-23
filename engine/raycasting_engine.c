@@ -12,13 +12,34 @@
 
 #include "cub3d.h"
 
-/**
- * cast_rays - Placeholder for the core raycasting algorithm.
- * @data: Pointer to the main project structure.
- */
-void	cast_rays(void *data)
+static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
-	(void)data;
+	char	*dst;
+
+	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	render_frame(t_data *data)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < 600)
+	{
+		x = 0;
+		while (x < 800)
+		{
+			if (y < 300)
+				my_mlx_pixel_put(&data->img, x, y, data->config.ceiling_col);
+			else
+				my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }
 
 /**

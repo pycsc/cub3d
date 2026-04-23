@@ -59,5 +59,6 @@ int	parse_line(char *line, t_data *data);
 int	is_map_line(char *line);
 int	add_map_line(char *line, t_data *data);
 int	lst_to_array(t_data *data);
+void	render_frame(t_data *data);
 
 #endif
