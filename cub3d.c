@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, 800, 600, "CUB3D");
+	win = mlx_new_window(mlx, 800, 600, "cub3D");
 	if (!win)
 		return (1);
 	mlx_loop(mlx);
