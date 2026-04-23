@@ -10,12 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = CUB3D
+NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 OS := $(shell uname)
 ARCH := $(shell uname -m)
+
+LIBFT_DIR = libs/libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
 ifeq ($(OS), Linux)
     MLX_DIR = libs/minilibx-linux
@@ -31,26 +34,31 @@ else ifeq ($(OS), Darwin)
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 endif
 
-SRCS = cub3d.c
+SRCS = cub3d.c parsing/scene_parser.c parsing/parser_utils.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
+
 $(MLX_LIB):
 	@make -C $(MLX_DIR)
 
-$(NAME): $(OBJS) $(MLX_LIB)
-	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -Iinclude -I$(MLX_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -Iinclude -I$(MLX_DIR) -I$(LIBFT_DIR) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
+	@make -C $(LIBFT_DIR) clean
 	@make -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
