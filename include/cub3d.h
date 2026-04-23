@@ -41,5 +41,9 @@ typedef struct s_data
 
 int	parse_scene(char *file, t_data *data);
 int	validate_map(char **map);
+int	is_config_line(char *line);
+int	parse_line(char *line, t_data *data);
+int	is_map_line(char *line);
+int	add_map_line(char *line, t_data *data);
 
 #endif
