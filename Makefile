@@ -40,7 +40,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(LIBFT):
-	@make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) bonus
 
 $(MLX_LIB):
 	@make -C $(MLX_DIR)
