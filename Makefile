@@ -43,7 +43,8 @@ SRCS = cub3d.c \
 			 parsing/map_parser.c \
 			 engine/raycasting_engine.c \
 			 engine/player_controller.c \
-			 engine/texture_manager.c
+			 engine/texture_manager.c \
+			 engine/minimap_renderer.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

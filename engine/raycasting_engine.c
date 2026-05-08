@@ -111,5 +111,6 @@ void	render_frame(t_data *data)
 			data->player.dir_y + data->player.plane_y * cx, x);
 		x++;
 	}
+	draw_minimap(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }

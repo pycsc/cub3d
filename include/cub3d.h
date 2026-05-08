@@ -98,6 +98,7 @@ int		load_textures(t_data *data);
 void	render_frame(t_data *data);
 void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);
+void	draw_minimap(t_data *data);
 void	print_error(char *msg);
 
 #endif
