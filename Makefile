@@ -6,7 +6,7 @@
 #    By: lucas <lucas@tsiaraso.com>                   +########+               #
 #                                                           +###+              #
 #    Created: 2026/04/23 15:00:00 by lucas                   ##+               #
-#    Updated: 2026/04/23 15:00:00 by lucas                  #+                 #
+#    Updated: 2026/05/08 06:47:10 by lucas                  #+                 #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRCS = cub3d.c \
 			 parsing/parser_utils.c \
 			 parsing/map_parser.c \
 			 engine/raycasting_engine.c \
-			 engine/player_controller.c
+			 engine/player_controller.c \
+			 engine/texture_manager.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

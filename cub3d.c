@@ -71,6 +71,8 @@ int	main(int argc, char **argv)
 	data.win = mlx_new_window(data.mlx, 800, 600, "cub3D");
 	if (!data.win)
 		return (1);
+	if (load_textures(&data))
+		return (1);
 	data.img.img = mlx_new_image(data.mlx, 800, 600);
 	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, \
 		&data.img.line_length, &data.img.endian);

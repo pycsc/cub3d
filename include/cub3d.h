@@ -58,6 +58,8 @@ typedef struct s_img
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }	t_img;
 
 typedef struct s_player
@@ -79,6 +81,7 @@ typedef struct s_data
 	void		*mlx;
 	void		*win;
 	t_img		img;
+	t_img		tex[4];
 	int			keys[65536];
 }	t_data;
 
@@ -91,6 +94,7 @@ int		add_map_line(char *line, t_data *data);
 int		lst_to_array(t_data *data);
 int		init_player(t_data *data);
 int		update_game(t_data *data);
+int		load_textures(t_data *data);
 void	render_frame(t_data *data);
 void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);

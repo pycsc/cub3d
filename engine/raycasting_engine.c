@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 22:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,57 +21,72 @@ static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static void	draw_wall_stripe(t_data *data, int x, int start, int end)
+static unsigned int	get_tex_color(t_img *tex, int x, int y)
 {
-	int	y;
+	char	*dst;
 
-	y = 0;
-	while (y < 600)
+	dst = tex->addr + (y * tex->line_length + x * (tex->bits_per_pixel / 8));
+	return (*(unsigned int *)dst);
+}
+
+static void	draw_line_textured(t_data *data, int x, int side, double pwd, double rx, double ry, int lh)
+{
+	int		tex_num;
+	double	wall_x;
+	int		tex_x;
+	int		y;
+	double	step;
+	double	tex_pos;
+	int		start;
+	int		end;
+
+	if (side == 0)
+		tex_num = (rx > 0) ? 3 : 2;
+	else
+		tex_num = (ry > 0) ? 1 : 0;
+	if (side == 0)
+		wall_x = data->player.y + pwd * ry;
+	else
+		wall_x = data->player.x + pwd * rx;
+	wall_x -= floor(wall_x);
+	tex_x = (int)(wall_x * (double)data->tex[tex_num].width);
+	if ((side == 0 && rx > 0) || (side == 1 && ry < 0))
+		tex_x = data->tex[tex_num].width - tex_x - 1;
+	step = 1.0 * data->tex[tex_num].height / lh;
+	start = fmax(0, -lh / 2 + 300);
+	end = fmin(599, lh / 2 + 300);
+	tex_pos = (start - 300 + lh / 2.0) * step;
+	y = -1;
+	while (++y < 600)
 	{
 		if (y < start)
 			my_mlx_pixel_put(&data->img, x, y, data->config.ceiling_col);
 		else if (y > end)
 			my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
 		else
-			my_mlx_pixel_put(&data->img, x, y, 0x00FF0000);
-		y++;
+		{
+			my_mlx_pixel_put(&data->img, x, y, get_tex_color(&data->tex[tex_num], tex_x, (int)tex_pos));
+			tex_pos += step;
+		}
 	}
-}
-
-static void	init_dda(t_data *data, double rx, double ry, double *sd)
-{
-	double	ddx;
-	double	ddy;
-
-	ddx = fabs(1 / rx);
-	ddy = fabs(1 / ry);
-	if (rx < 0)
-		sd[0] = (data->player.x - (int)data->player.x) * ddx;
-	else
-		sd[0] = ((int)data->player.x + 1.0 - data->player.x) * ddx;
-	if (ry < 0)
-		sd[1] = (data->player.y - (int)data->player.y) * ddy;
-	else
-		sd[1] = ((int)data->player.y + 1.0 - data->player.y) * ddy;
 }
 
 static void	perform_dda(t_data *data, double rx, double ry, int x)
 {
 	double	sd[2];
 	double	dd[2];
-	double	pwd;
 	int		map[2];
 	int		step[2];
 	int		side;
-	int		lh;
 
 	dd[0] = fabs(1 / rx);
 	dd[1] = fabs(1 / ry);
-	init_dda(data, rx, ry, sd);
 	map[0] = (int)data->player.x;
 	map[1] = (int)data->player.y;
 	step[0] = (rx < 0) ? -1 : 1;
 	step[1] = (ry < 0) ? -1 : 1;
+	sd[0] = (rx < 0) ? (data->player.x - map[0]) * dd[0] : (map[0] + 1.0 - data->player.x) * dd[0];
+	sd[1] = (ry < 0) ? (data->player.y - map[1]) * dd[1] : (map[1] + 1.0 - data->player.y) * dd[1];
 	while (data->map[map[1]][map[0]] != '1')
 	{
 		if (sd[0] < sd[1] && (side = 0))
@@ -79,25 +94,21 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 		else if ((side = 1))
 			(1) && (sd[1] += dd[1]) && (map[1] += step[1]);
 	}
-	pwd = (side == 0) ? (sd[0] - dd[0]) : (sd[1] - dd[1]);
-	lh = (int)(600 / pwd);
-	draw_wall_stripe(data, x, fmax(0, -lh / 2 + 300), fmin(599, lh / 2 + 300));
+	double pwd = (side == 0) ? (map[0] - data->player.x + (1 - step[0]) / 2) / rx : (map[1] - data->player.y + (1 - step[1]) / 2) / ry;
+	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd));
 }
 
 void	render_frame(t_data *data)
 {
 	int		x;
 	double	cx;
-	double	rx;
-	double	ry;
 
 	x = 0;
 	while (x < 800)
 	{
 		cx = 2 * x / (double)800 - 1;
-		rx = data->player.dir_x + data->player.plane_x * cx;
-		ry = data->player.dir_y + data->player.plane_y * cx;
-		perform_dda(data, rx, ry, x);
+		perform_dda(data, data->player.dir_x + data->player.plane_x * cx, \
+			data->player.dir_y + data->player.plane_y * cx, x);
 		x++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
