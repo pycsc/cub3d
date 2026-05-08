@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/08 09:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ typedef struct s_data
 	void		*win;
 	t_img		img;
 	t_img		tex[4];
-	t_img		logo;
 	int			keys[65536];
+	int			health;
+	int			ammo;
+	int			score;
 }	t_data;
 
 int		parse_scene(char *file, t_data *data);
@@ -100,6 +102,7 @@ void	render_frame(t_data *data);
 void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);
 void	draw_minimap(t_data *data);
+void	draw_hud(t_data *data);
 void	print_error(char *msg);
 
 #endif

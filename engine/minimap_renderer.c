@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 07:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/08 09:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,6 @@ static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 		return ;
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
-}
-
-static unsigned int	get_tex_color(t_img *tex, int x, int y)
-{
-	char	*dst;
-
-	dst = tex->addr + (y * tex->line_length + x * (tex->bits_per_pixel / 8));
-	return (*(unsigned int *)dst);
 }
 
 static void	draw_square(t_data *data, int x, int y, int size, int color)
@@ -46,27 +38,6 @@ static void	draw_square(t_data *data, int x, int y, int size, int color)
 			j++;
 		}
 		i++;
-	}
-}
-
-static void	draw_logo(t_data *data)
-{
-	int				x;
-	int				y;
-	unsigned int	color;
-
-	y = 0;
-	while (y < data->logo.height)
-	{
-		x = 0;
-		while (x < data->logo.width)
-		{
-			color = get_tex_color(&data->logo, x, y);
-			if (color != 0xFF000000)
-				my_mlx_pixel_put(&data->img, 760 + x, 560 + y, color);
-			x++;
-		}
-		y++;
 	}
 }
 
@@ -97,5 +68,4 @@ void	draw_minimap(t_data *data)
 	}
 	draw_square(data, 10 + data->player.x * scale - 2, \
 		10 + data->player.y * scale - 2, 4, 0x00FF0000);
-	draw_logo(data);
 }

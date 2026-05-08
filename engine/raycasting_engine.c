@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/08 10:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,25 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd));
 }
 
+static void	apply_dot_filter(t_data *data)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < 600)
+	{
+		x = 0;
+		while (x < 800)
+		{
+			if (x % 2 != 0 || y % 2 != 0)
+				my_mlx_pixel_put(&data->img, x, y, 0);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	render_frame(t_data *data)
 {
 	int		x;
@@ -112,5 +131,7 @@ void	render_frame(t_data *data)
 		x++;
 	}
 	draw_minimap(data);
+	draw_hud(data);
+	apply_dot_filter(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }

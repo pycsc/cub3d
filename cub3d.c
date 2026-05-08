@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/08 09:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (1);
 	ft_memset(&data, 0, sizeof(t_data));
+	data.health = 100;
+	data.ammo = 30;
+	data.score = 10245;
 	if (parse_scene(argv[1], &data))
 		return (1);
 	if (init_player(&data))
