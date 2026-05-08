@@ -82,6 +82,7 @@ typedef struct s_data
 	void		*win;
 	t_img		img;
 	t_img		tex[4];
+	t_img		logo;
 	int			keys[65536];
 }	t_data;
 

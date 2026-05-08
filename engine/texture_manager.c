@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 07:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 07:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	load_textures(t_data *data)
 	if (load_tex(data, &data->tex[2], data->config.we_tex))
 		return (1);
 	if (load_tex(data, &data->tex[3], data->config.ea_tex))
+		return (1);
+	if (load_tex(data, &data->logo, "./textures/logo.xpm"))
 		return (1);
 	return (0);
 }

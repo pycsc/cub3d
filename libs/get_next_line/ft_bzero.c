@@ -6,13 +6,13 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 20:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 20:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 08:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_bzero(void *s, size_t n)
+void	gnl_bzero(void *s, size_t n)
 {
-	ft_memset(s, 0, n);
+	gnl_memset(s, 0, n);
 }

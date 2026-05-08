@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 20:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 20:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 08:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static char	*read_and_stash(int fd, char *stash)
 	int		rd;
 
 	if (!stash)
-		stash = ft_calloc(1, 1);
+		stash = gnl_calloc(1, 1);
 	buf = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
 	rd = 1;
-	while (!ft_strchr(stash, '\n') && rd > 0)
+	while (!gnl_strchr(stash, '\n') && rd > 0)
 	{
 		rd = read(fd, buf, BUFFER_SIZE);
 		if (rd == -1)
@@ -33,7 +33,7 @@ static char	*read_and_stash(int fd, char *stash)
 			return (NULL);
 		}
 		buf[rd] = '\0';
-		stash = ft_strjoin(stash, buf);
+		stash = gnl_strjoin(stash, buf);
 	}
 	free(buf);
 	return (stash);
@@ -78,7 +78,7 @@ static char	*update_stash(char *stash)
 		return (NULL);
 	}
 	i++;
-	remainder = malloc(ft_strlen(stash + i) + 1);
+	remainder = malloc(gnl_strlen(stash + i) + 1);
 	if (!remainder)
 	{
 		free(stash);

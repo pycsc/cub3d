@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 20:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 20:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 08:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 # endif
 
 char	*get_next_line(int fd);
-size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-void	*ft_calloc(size_t count, size_t size);
-void	ft_bzero(void *s, size_t n);
-void	*ft_memset(void *b, int c, size_t len);
+size_t	gnl_strlen(const char *s);
+char	*gnl_strchr(const char *s, int c);
+char	*gnl_strjoin(char *s1, char *s2);
+void	*gnl_calloc(size_t count, size_t size);
+void	gnl_bzero(void *s, size_t n);
+void	*gnl_memset(void *b, int c, size_t len);
 
 #endif

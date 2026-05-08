@@ -6,23 +6,25 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 20:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 20:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 08:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	gnl_strlen(const char *s)
 {
 	size_t	len;
 
 	len = 0;
+	if (!s)
+		return (0);
 	while (s[len])
 		len++;
 	return (len);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*gnl_strchr(const char *s, int c)
 {
 	if (!s)
 		return (NULL);
@@ -37,7 +39,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*gnl_strjoin(char *s1, char *s2)
 {
 	char	*res;
 	size_t	len1;
@@ -45,8 +47,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	len1 = 0;
 	if (s1)
-		len1 = ft_strlen(s1);
-	res = malloc(len1 + ft_strlen(s2) + 1);
+		len1 = gnl_strlen(s1);
+	res = malloc(len1 + gnl_strlen(s2) + 1);
 	if (!res)
 	{
 		free((void *)s1);
