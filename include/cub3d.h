@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/04/23 18:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,17 @@ typedef struct s_data
 	t_img		img;
 }	t_data;
 
-int	parse_scene(char *file, t_data *data);
-int	validate_map(char **map);
-int	is_config_line(char *line);
-int	parse_line(char *line, t_data *data);
-int	is_map_line(char *line);
-int	add_map_line(char *line, t_data *data);
-int	lst_to_array(t_data *data);
+int		parse_scene(char *file, t_data *data);
+int		validate_map(t_data *data);
+int		is_config_line(char *line);
+int		parse_line(char *line, t_data *data);
+int		is_map_line(char *line);
+int		add_map_line(char *line, t_data *data);
+int		lst_to_array(t_data *data);
+int		init_player(t_data *data);
 void	render_frame(t_data *data);
+void	move_player(t_data *data, double dx, double dy);
+void	rotate_player(t_data *data, double angle);
+void	print_error(char *msg);
 
 #endif

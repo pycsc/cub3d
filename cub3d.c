@@ -35,6 +35,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_scene(argv[1], &data))
 		return (1);
+	if (init_player(&data))
+		return (1);
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (1);
