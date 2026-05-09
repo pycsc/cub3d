@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 09:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,21 @@ typedef struct s_player
 	double	plane_y;
 }	t_player;
 
+typedef struct s_dda
+{
+	double	rx;
+	double	ry;
+	int		map[2];
+	double	sd[2];
+	double	dd[2];
+	int		step[2];
+	int		side;
+	double	pwd;
+	int		hit_coin;
+	double	coin_pwd;
+	double	coin_wall_x;
+}	t_dda;
+
 typedef struct s_data
 {
 	t_config	config;
@@ -86,6 +101,7 @@ typedef struct s_data
 	int			health;
 	int			ammo;
 	int			score;
+	long long	frame;
 }	t_data;
 
 int		parse_scene(char *file, t_data *data);

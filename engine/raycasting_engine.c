@@ -21,41 +21,44 @@ static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static unsigned int	get_tex_color(t_img *tex, int x, int y)
-{
-	char	*dst;
-
-	dst = tex->addr + (y * tex->line_length + x * (tex->bits_per_pixel / 8));
-	return (*(unsigned int *)dst);
-}
-
-static void	draw_line_textured(t_data *data, int x, int side, double pwd, double rx, double ry, int lh, int is_coin)
+static void	draw_wall_pixel(t_data *data, int x, int y, t_dda *d)
 {
 	int		tex_num;
 	double	wall_x;
 	int		tex_x;
-	int		y;
 	double	step;
 	double	tex_pos;
-	int		start;
-	int		end;
+	int		lh;
 
-	if (side == 0)
-		tex_num = (rx > 0) ? 3 : 2;
+	if (d->side == 0)
+		tex_num = (d->rx > 0) ? 3 : 2;
 	else
-		tex_num = (ry > 0) ? 1 : 0;
-	if (side == 0)
-		wall_x = data->player.y + pwd * ry;
+		tex_num = (d->ry > 0) ? 1 : 0;
+	if (d->side == 0)
+		wall_x = data->player.y + d->pwd * d->ry;
 	else
-		wall_x = data->player.x + pwd * rx;
+		wall_x = data->player.x + d->pwd * d->rx;
 	wall_x -= floor(wall_x);
 	tex_x = (int)(wall_x * (double)data->tex[tex_num].width);
-	if ((side == 0 && rx > 0) || (side == 1 && ry < 0))
+	if ((d->side == 0 && d->rx > 0) || (d->side == 1 && d->ry < 0))
 		tex_x = data->tex[tex_num].width - tex_x - 1;
+	lh = (int)(600 / d->pwd);
 	step = 1.0 * data->tex[tex_num].height / lh;
+	tex_pos = (y - 300 + lh / 2.0) * step;
+	char *dst = data->tex[tex_num].addr + ((int)tex_pos * data->tex[tex_num].line_length + tex_x * (data->tex[tex_num].bits_per_pixel / 8));
+	my_mlx_pixel_put(&data->img, x, y, *(unsigned int *)dst);
+}
+
+static void	draw_line_textured(t_data *data, int x, t_dda *d)
+{
+	int		lh;
+	int		start;
+	int		end;
+	int		y;
+
+	lh = (int)(600 / d->pwd);
 	start = fmax(0, -lh / 2 + 300);
 	end = fmin(599, lh / 2 + 300);
-	tex_pos = (start - 300 + lh / 2.0) * step;
 	y = -1;
 	while (++y < 600)
 	{
@@ -64,87 +67,44 @@ static void	draw_line_textured(t_data *data, int x, int side, double pwd, double
 		else if (y > end)
 			my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
 		else
+			draw_wall_pixel(data, x, y, d);
+		if (d->hit_coin)
 		{
-			if (is_coin)
-			{
-				double dy = (y - 300.0) / (lh / 2.0);
-				double dx = (wall_x - 0.5) * 2.0;
-				if (dx * dx + dy * dy < 0.4)
-					my_mlx_pixel_put(&data->img, x, y, 0x00FFD700);
-				else if (y < 300)
-					my_mlx_pixel_put(&data->img, x, y, data->config.ceiling_col);
-				else
-					my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
-			}
-			else
-				my_mlx_pixel_put(&data->img, x, y, get_tex_color(&data->tex[tex_num], tex_x, (int)tex_pos));
-			tex_pos += step;
+			double clh = 600 / d->coin_pwd;
+			double dy = (y - 300.0) / (clh / 2.0);
+			double dx = (d->coin_wall_x - 0.5) * 2.0;
+			double rot = sin(data->frame * 0.1) * 0.8;
+			if (dx * dx / (rot * rot + 0.01) + dy * dy < 0.2)
+				my_mlx_pixel_put(&data->img, x, y, 0x00FFD700);
 		}
 	}
 }
 
 static void	perform_dda(t_data *data, double rx, double ry, int x)
 {
-	double	sd[2];
-	double	dd[2];
-	int		map[2];
-	int		step[2];
-	int		side = 0;
-	int		is_coin = 0;
+	t_dda	d;
 
-	dd[0] = fabs(1 / rx);
-	dd[1] = fabs(1 / ry);
-	map[0] = (int)data->player.x;
-	map[1] = (int)data->player.y;
-	step[0] = (rx < 0) ? -1 : 1;
-	step[1] = (ry < 0) ? -1 : 1;
-	sd[0] = (rx < 0) ? (data->player.x - map[0]) * dd[0] : (map[0] + 1.0 - data->player.x) * dd[0];
-	sd[1] = (ry < 0) ? (data->player.y - map[1]) * dd[1] : (map[1] + 1.0 - data->player.y) * dd[1];
-	while (data->map[map[1]][map[0]] != '1')
+	ft_memset(&d, 0, sizeof(t_dda));
+	d.rx = rx; d.ry = ry;
+	d.dd[0] = fabs(1 / rx); d.dd[1] = fabs(1 / ry);
+	d.map[0] = (int)data->player.x; d.map[1] = (int)data->player.y;
+	d.step[0] = (rx < 0) ? -1 : 1; d.step[1] = (ry < 0) ? -1 : 1;
+	d.sd[0] = (rx < 0) ? (data->player.x - d.map[0]) * d.dd[0] : (d.map[0] + 1.0 - data->player.x) * d.dd[0];
+	d.sd[1] = (ry < 0) ? (data->player.y - d.map[1]) * d.dd[1] : (d.map[1] + 1.0 - data->player.y) * d.dd[1];
+	while (data->map[d.map[1]][d.map[0]] != '1')
 	{
-		if (data->map[map[1]][map[0]] == '2')
+		if (!d.hit_coin && data->map[d.map[1]][d.map[0]] == '2')
 		{
-			is_coin = 1;
-			break ;
+			d.hit_coin = 1;
+			d.coin_pwd = (d.side == 0) ? (d.map[0] - data->player.x + (1 - d.step[0]) / 2) / rx : (d.map[1] - data->player.y + (1 - d.step[1]) / 2) / ry;
+			d.coin_wall_x = (d.side == 0) ? data->player.y + d.coin_pwd * ry : data->player.x + d.coin_pwd * rx;
+			d.coin_wall_x -= floor(d.coin_wall_x);
 		}
-		if (sd[0] < sd[1])
-		{
-			sd[0] += dd[0];
-			map[0] += step[0];
-			side = 0;
-		}
-		else
-		{
-			sd[1] += dd[1];
-			map[1] += step[1];
-			side = 1;
-		}
+		if (d.sd[0] < d.sd[1] && (d.side = 0)) d.sd[0] += d.dd[0], d.map[0] += d.step[0];
+		else if ((d.side = 1)) d.sd[1] += d.dd[1], d.map[1] += d.step[1];
 	}
-	double pwd;
-	if (side == 0)
-		pwd = (map[0] - data->player.x + (1 - step[0]) / 2) / rx;
-	else
-		pwd = (map[1] - data->player.y + (1 - step[1]) / 2) / ry;
-	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd), is_coin);
-}
-
-static void	apply_dot_filter(t_data *data)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < 600)
-	{
-		x = 0;
-		while (x < 800)
-		{
-			if (x % 3 == 2 || y % 3 == 2)
-				my_mlx_pixel_put(&data->img, x, y, 0);
-			x++;
-		}
-		y++;
-	}
+	d.pwd = (d.side == 0) ? (d.map[0] - data->player.x + (1 - d.step[0]) / 2) / rx : (d.map[1] - data->player.y + (1 - d.step[1]) / 2) / ry;
+	draw_line_textured(data, x, &d);
 }
 
 void	render_frame(t_data *data)
@@ -153,6 +113,7 @@ void	render_frame(t_data *data)
 	double	cx;
 
 	x = 0;
+	data->frame++;
 	while (x < 800)
 	{
 		cx = 2 * x / (double)800 - 1;
