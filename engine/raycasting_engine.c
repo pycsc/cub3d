@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,18 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 	sd[1] = (ry < 0) ? (data->player.y - map[1]) * dd[1] : (map[1] + 1.0 - data->player.y) * dd[1];
 	while (data->map[map[1]][map[0]] != '1')
 	{
-		if (sd[0] < sd[1] && (side = 0))
-			(1) && (sd[0] += dd[0]) && (map[0] += step[0]);
-		else if ((side = 1))
-			(1) && (sd[1] += dd[1]) && (map[1] += step[1]);
+		if (sd[0] < sd[1])
+		{
+			sd[0] += dd[0];
+			map[0] += step[0];
+			side = 0;
+		}
+		else
+		{
+			sd[1] += dd[1];
+			map[1] += step[1];
+			side = 1;
+		}
 	}
 	double pwd = (side == 0) ? (map[0] - data->player.x + (1 - step[0]) / 2) / rx : (map[1] - data->player.y + (1 - step[1]) / 2) / ry;
 	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd));

@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 07:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,12 @@ void	draw_minimap(t_data *data)
 		while (data->map[y][++x])
 		{
 			if (data->map[y][x] == '1')
-			{
-				if (y == 0) // North wall (Top) -> Cyan
-					draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x4ECBD4);
-				else if (!data->map[y + 1]) // South wall (Bottom) -> Orange
-					draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0xFF8800);
-				else // West/East or inner walls -> Gray
-					draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x444444);
-			}
+				draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x444444);
 			else if (data->map[y][x] != ' ' && data->map[y][x] != '\0')
 				draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x111111);
 		}
 	}
-	draw_rect(data, off[0] + data->player.x * scale - 1, off[1] + data->player.y * scale - 1, 3, 3, 0xFFFFFF);
+	draw_rect(data, off[0] + (int)data->player.x * scale - 1, off[1] + (int)data->player.y * scale - 1, 3, 3, 0xFFFFFF);
 	draw_rect(data, off[0] + (data->player.x + data->player.dir_x * 0.5) * scale - 1, \
 		off[1] + (data->player.y + data->player.dir_y * 0.5) * scale - 1, 2, 2, 0xFF0000);
 }
