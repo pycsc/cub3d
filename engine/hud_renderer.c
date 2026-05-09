@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 09:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 14:45:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,29 @@ static void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
 	}
 }
 
-static void	draw_bar(t_data *data, int x, int y, int val, int color)
+static void	draw_digit(t_data *data, int x, int y, int digit)
 {
-	draw_rect(data, x, y, 100, 12, 0x00222222); // Background
-	draw_rect(data, x, y, val, 12, color); // Fill
+	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
+		draw_rect(data, x, y, 10, 2, 0xFFFFFF); // top
+	if (digit == 0 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
+		draw_rect(data, x, y, 2, 10, 0xFFFFFF); // top-left
+	if (digit == 0 || digit == 1 || digit == 2 || digit == 3 || digit == 4 || digit == 7 || digit == 8 || digit == 9)
+		draw_rect(data, x + 8, y, 2, 10, 0xFFFFFF); // top-right
+	if (digit == 2 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
+		draw_rect(data, x, y + 9, 10, 2, 0xFFFFFF); // middle
+	if (digit == 0 || digit == 2 || digit == 6 || digit == 8)
+		draw_rect(data, x, y + 10, 2, 10, 0xFFFFFF); // bottom-left
+	if (digit == 0 || digit == 1 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
+		draw_rect(data, x + 8, y + 10, 2, 10, 0xFFFFFF); // bottom-right
+	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
+		draw_rect(data, x, y + 18, 10, 2, 0xFFFFFF); // bottom
+}
+
+static void	draw_number(t_data *data, int x, int y, int num)
+{
+	if (num >= 10)
+		draw_number(data, x - 15, y, num / 10);
+	draw_digit(data, x, y, num % 10);
 }
 
 static void	draw_dollar(t_data *data, int x, int y, int color)
@@ -59,21 +78,20 @@ static void	draw_dollar(t_data *data, int x, int y, int color)
 
 void	draw_hud(t_data *data)
 {
-	// Health (Top-left) - White
 	draw_rect(data, 20, 20, 30, 30, 0x00000000);
-	draw_rect(data, 25, 33, 20, 4, 0x00FFFFFF);
-	draw_rect(data, 33, 25, 4, 20, 0x00FFFFFF);
-	draw_bar(data, 60, 30, data->health, 0x00FFFFFF);
+	draw_rect(data, 25, 33, 20, 4, 0xFFFFFF);
+	draw_rect(data, 33, 25, 4, 20, 0xFFFFFF);
+	draw_rect(data, 60, 30, 100, 12, 0x222222);
+	draw_rect(data, 60, 30, data->health, 12, 0xFFFFFF);
 
-	// Ammo (Below Health) - White
 	draw_rect(data, 20, 60, 30, 30, 0x00000000);
-	draw_rect(data, 25, 65, 3, 15, 0x00FFFFFF);
-	draw_rect(data, 31, 65, 3, 15, 0x00FFFFFF);
-	draw_rect(data, 37, 65, 3, 15, 0x00FFFFFF);
-	draw_bar(data, 60, 70, data->ammo, 0x00FFFFFF);
+	draw_rect(data, 25, 65, 3, 15, 0xFFFFFF);
+	draw_rect(data, 31, 65, 3, 15, 0xFFFFFF);
+	draw_rect(data, 37, 65, 3, 15, 0xFFFFFF);
+	draw_rect(data, 60, 70, 100, 12, 0x222222);
+	draw_rect(data, 60, 70, data->ammo, 12, 0xFFFFFF);
 
-	// Score (Top-right) - Gray
-	draw_rect(data, 680, 20, 30, 30, 0x00333333);
-	draw_dollar(data, 680, 20, 0x00666666);
-	draw_rect(data, 720, 30, 60, 12, 0x00666666);
+	draw_rect(data, 680, 20, 30, 30, 0x00000000);
+	draw_dollar(data, 680, 20, 0xFFFFFF);
+	draw_number(data, 770, 25, data->score);
 }
