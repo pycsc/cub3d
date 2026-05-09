@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 11:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ void	render_frame(t_data *data)
 			data->player.dir_y + data->player.plane_y * cx, x);
 		x++;
 	}
+	apply_dot_filter(data);
 	draw_minimap(data);
 	draw_hud(data);
-	apply_dot_filter(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }
