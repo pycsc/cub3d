@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 16:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 17:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ int	close_window(t_data *data)
 	return (0);
 }
 
-int	key_press(int keycode, t_data *data)
+int	key_press(int k, t_data *data)
 {
-	if (keycode == KEY_ESC)
+	if (k == KEY_ESC)
 		close_window(data);
-	if (keycode >= 0 && keycode < 65536)
-		data->keys[keycode] = 1;
+	if (k >= 0 && k < 65536)
+		data->keys[k] = 1;
 	return (0);
 }
 
-int	key_release(int keycode, t_data *data)
+int	key_release(int k, t_data *data)
 {
-	if (keycode >= 0 && keycode < 65536)
-		data->keys[keycode] = 0;
+	if (k >= 0 && k < 65536)
+		data->keys[k] = 0;
 	return (0);
 }
 
@@ -55,25 +55,6 @@ int	update_game(t_data *data)
 	return (0);
 }
 
-static int	init_mlx(t_data *data)
-{
-	data->mlx = mlx_init();
-	if (!data->mlx)
-		return (print_error("Failed to initialize MiniLibX"), 1);
-	data->win = mlx_new_window(data->mlx, 800, 600, "cub3D");
-	if (!data->win)
-		return (print_error("Failed to create window"), 1);
-	if (load_textures(data))
-		return (1);
-	data->img.img = mlx_new_image(data->mlx, 800, 600);
-	if (!data->img.img)
-		return (print_error("Failed to create main image"), 1);
-	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel, \
-		&data->img.line_length, &data->img.endian);
-	set_platform_icon(data, "assets/logo.png");
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -82,19 +63,26 @@ int	main(int argc, char **argv)
 		return (ft_putstr_fd("Usage: ./cub3D <map.cub>\n", 2), 1);
 	srand(time(NULL));
 	ft_memset(&data, 0, sizeof(t_data));
-	if (parse_scene(argv[1], &data))
-		return (1);
-	if (init_player(&data))
+	set_platform_icon(&data, "assets/logo.png");
+	if (parse_scene(argv[1], &data) || init_player(&data))
 		return (1);
 	data.health = 100;
 	data.ammo = 100;
 	spawn_coin(&data);
-	if (init_mlx(&data))
+	data.mlx = mlx_init();
+	if (!data.mlx)
+		return (print_error("Failed to init MLX"), 1);
+	data.win = mlx_new_window(data.mlx, 800, 600, "cub3D");
+	if (!data.win || load_textures(&data))
 		return (1);
+	data.img.img = mlx_new_image(data.mlx, 800, 600);
+	if (!data.img.img)
+		return (print_error("Failed to create image"), 1);
+	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, \
+		&data.img.line_length, &data.img.endian);
 	mlx_hook(data.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_loop_hook(data.mlx, update_game, &data);
-	mlx_loop(data.mlx);
-	return (0);
+	return (mlx_loop(data.mlx), 0);
 }
