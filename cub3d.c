@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 12:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 14:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	main(int argc, char **argv)
 	}
 	ft_memset(&data, 0, sizeof(t_data));
 	data.health = 100;
-	data.ammo = 30;
-	data.score = 10245;
+	data.ammo = 100;
+	data.score = 0;
 	set_platform_icon("assets/logo.png");
 	if (parse_scene(argv[1], &data))
 		return (1);
