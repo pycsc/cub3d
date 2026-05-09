@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ static void	draw_line_textured(t_data *data, int x, int side, double pwd, double
 	step = 1.0 * data->tex[tex_num].height / lh;
 	start = fmax(0, -lh / 2 + 300);
 	end = fmin(599, lh / 2 + 300);
+	if (is_coin)
+	{
+		start = fmax(0, -lh / 4 + 300);
+		end = fmin(599, lh / 4 + 300);
+	}
 	tex_pos = (start - 300 + lh / 2.0) * step;
 	y = -1;
 	while (++y < 600)
@@ -66,7 +71,18 @@ static void	draw_line_textured(t_data *data, int x, int side, double pwd, double
 		else
 		{
 			if (is_coin)
-				my_mlx_pixel_put(&data->img, x, y, 0x00FFD700);
+			{
+				double hit_dist = fabs(wall_x - 0.5);
+				if (hit_dist < 0.3)
+					my_mlx_pixel_put(&data->img, x, y, 0x00FFD700);
+				else
+				{
+					if (y < -lh / 2 + 300)
+						my_mlx_pixel_put(&data->img, x, y, data->config.ceiling_col);
+					else
+						my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
+				}
+			}
 			else
 				my_mlx_pixel_put(&data->img, x, y, get_tex_color(&data->tex[tex_num], tex_x, (int)tex_pos));
 			tex_pos += step;

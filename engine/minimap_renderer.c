@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 07:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	draw_minimap(t_data *data)
 		{
 			if (data->map[y][x] == '1')
 				draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x444444);
+			else if (data->map[y][x] == '2')
+				draw_rect(data, off[0] + x * scale + 2, off[1] + y * scale + 2, 3, 3, 0xFFD700);
 			else if (data->map[y][x] != ' ' && data->map[y][x] != '\0')
 				draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x111111);
 		}
