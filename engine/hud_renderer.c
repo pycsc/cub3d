@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 09:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:45:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 16:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,37 @@ void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
 	}
 }
 
+static int	is_d(int d, int *list)
+{
+	int	i;
+
+	i = 0;
+	while (list[i] != -1)
+	{
+		if (d == list[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 static void	draw_digit(t_data *data, int x, int y, int digit)
 {
-	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x, y, 10, 2, 0xFFFFFF);
-	if (digit == 0 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y, 2, 10, 0xFFFFFF);
-	if (digit == 0 || digit == 1 || digit == 2 || digit == 3 || digit == 4 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x + 8, y, 2, 10, 0xFFFFFF);
-	if (digit == 2 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y + 9, 10, 2, 0xFFFFFF);
-	if (digit == 0 || digit == 2 || digit == 6 || digit == 8)
-		draw_rect(data, x, y + 10, 2, 10, 0xFFFFFF);
-	if (digit == 0 || digit == 1 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x + 8, y + 10, 2, 10, 0xFFFFFF);
-	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y + 18, 10, 2, 0xFFFFFF);
+	int	t[] = {0, 2, 3, 5, 6, 7, 8, 9, -1};
+	int	tl[] = {0, 4, 5, 6, 8, 9, -1};
+	int	tr[] = {0, 1, 2, 3, 4, 7, 8, 9, -1};
+	int	m[] = {2, 3, 4, 5, 6, 8, 9, -1};
+	int	bl[] = {0, 2, 6, 8, -1};
+	int	br[] = {0, 1, 3, 4, 5, 6, 7, 8, 9, -1};
+	int	b[] = {0, 2, 3, 5, 6, 8, 9, -1};
+
+	if (is_d(digit, t)) draw_rect(data, x, y, 10, 2, 0xFFFFFF);
+	if (is_d(digit, tl)) draw_rect(data, x, y, 2, 10, 0xFFFFFF);
+	if (is_d(digit, tr)) draw_rect(data, x + 8, y, 2, 10, 0xFFFFFF);
+	if (is_d(digit, m)) draw_rect(data, x, y + 9, 10, 2, 0xFFFFFF);
+	if (is_d(digit, bl)) draw_rect(data, x, y + 10, 2, 10, 0xFFFFFF);
+	if (is_d(digit, br)) draw_rect(data, x + 8, y + 10, 2, 10, 0xFFFFFF);
+	if (is_d(digit, b)) draw_rect(data, x, y + 18, 10, 2, 0xFFFFFF);
 }
 
 static void	draw_number(t_data *data, int x, int y, int num)
