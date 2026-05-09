@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 16:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 10:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 11:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static void	apply_dot_filter(t_data *data)
 		x = 0;
 		while (x < 800)
 		{
-			if (x % 2 != 0 || y % 2 != 0)
+			if (x % 3 == 2 || y % 3 == 2)
 				my_mlx_pixel_put(&data->img, x, y, 0);
 			x++;
 		}

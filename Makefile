@@ -6,7 +6,7 @@
 #    By: lucas <lucas@tsiaraso.com>                   +########+               #
 #                                                           +###+              #
 #    Created: 2026/04/23 15:00:00 by lucas                   ##+               #
-#    Updated: 2026/05/08 11:00:00 by lucas                  #+                 #
+#    Updated: 2026/05/08 12:00:00 by lucas                  #+                 #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ ifeq ($(OS), Linux)
     MLX_LIB = $(MLX_DIR)/libmlx.a
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
     PLATFORM_SRCS = engine/linux_icon.c
+    SET_ICON_TOOL =
 else ifeq ($(OS), Darwin)
     ifeq ($(ARCH), arm64)
         MLX_DIR = libs/minilibx-mms
@@ -37,6 +38,7 @@ else ifeq ($(OS), Darwin)
     endif
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
     PLATFORM_SRCS = engine/macos_icon.m
+    SET_ICON_TOOL = tools/set_icon
 endif
 
 SRCS = cub3d.c \
@@ -63,11 +65,15 @@ $(MLX_LIB):
 $(GNL_LIB):
 	@make -C $(GNL_DIR) bonus
 
-$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB)
+$(SET_ICON_TOOL): tools/set_icon.m
+	@$(CC) -framework AppKit tools/set_icon.m -o tools/set_icon
+
+$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB) $(SET_ICON_TOOL)
 	@cp $(MLX_LIB) .
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl $(MLX_FLAGS) -o $(NAME)
-	@chmod +x scripts/set_icon.sh
-	@./scripts/set_icon.sh assets/logo.png $(NAME)
+ifeq ($(OS), Darwin)
+	@./tools/set_icon assets/logo.png $(NAME)
+endif
 
 %.o: %.c
 	$(CC) $(CFLAGS) -Iinclude -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(GNL_DIR) -c $< -o $@
@@ -77,6 +83,7 @@ $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB)
 
 clean:
 	rm -f $(OBJS)
+	rm -f tools/set_icon
 	@make -C $(LIBFT_DIR) clean
 	@make -C $(MLX_DIR) clean
 	@make -C $(GNL_DIR) clean

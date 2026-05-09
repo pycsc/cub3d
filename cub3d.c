@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 10:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/08 12:30:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (argc != 2)
+	{
+		ft_putstr_fd("Usage: ./cub3D <map.cub>\n", 2);
 		return (1);
+	}
 	ft_memset(&data, 0, sizeof(t_data));
 	data.health = 100;
 	data.ammo = 30;
@@ -68,16 +71,18 @@ int	main(int argc, char **argv)
 	if (parse_scene(argv[1], &data))
 		return (1);
 	if (init_player(&data))
-		return (1);
+		return (print_error("Failed to initialize player"), 1);
 	data.mlx = mlx_init();
 	if (!data.mlx)
-		return (1);
+		return (print_error("Failed to initialize MiniLibX"), 1);
 	data.win = mlx_new_window(data.mlx, 800, 600, "cub3D");
 	if (!data.win)
-		return (1);
+		return (print_error("Failed to create window"), 1);
 	if (load_textures(&data))
 		return (1);
 	data.img.img = mlx_new_image(data.mlx, 800, 600);
+	if (!data.img.img)
+		return (print_error("Failed to create main image"), 1);
 	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, \
 		&data.img.line_length, &data.img.endian);
 	mlx_hook(data.win, 2, 1L << 0, key_press, &data);

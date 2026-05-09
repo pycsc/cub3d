@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 09:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 09:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 14:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,18 @@ static void	draw_bar(t_data *data, int x, int y, int val, int color)
 	draw_rect(data, x, y, val, 10, color);
 }
 
+static void	draw_dollar(t_data *data, int x, int y)
+{
+	// S shape
+	draw_rect(data, x + 5, y + 5, 20, 4, 0x00000000); // top
+	draw_rect(data, x + 5, y + 5, 4, 10, 0x00000000); // top-left
+	draw_rect(data, x + 5, y + 13, 20, 4, 0x00000000); // mid
+	draw_rect(data, x + 21, y + 13, 4, 10, 0x00000000); // bottom-right
+	draw_rect(data, x + 5, y + 21, 20, 4, 0x00000000); // bottom
+	// vertical bar
+	draw_rect(data, x + 13, y + 2, 4, 26, 0x00000000);
+}
+
 void	draw_hud(t_data *data)
 {
 	// Health (Top-left)
@@ -64,7 +76,6 @@ void	draw_hud(t_data *data)
 
 	// Score (Top-right)
 	draw_rect(data, 680, 20, 30, 30, 0x00FFD700); // Coin
-	draw_rect(data, 693, 25, 4, 20, 0x00000000); // $
-	// Simplified score as a bar for now or just the coin
+	draw_dollar(data, 680, 20); // $
 	draw_rect(data, 720, 30, 60, 10, 0x00FFFFFF);
 }
