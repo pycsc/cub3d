@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:46:19 by lucas                 #+                */
+/*    Updated: 2026/05/09 16:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	init_mlx(t_data *data)
 		return (print_error("Failed to create main image"), 1);
 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel, \
 		&data->img.line_length, &data->img.endian);
+	set_platform_icon(data, "assets/logo.png");
 	return (0);
 }
 
@@ -81,7 +82,6 @@ int	main(int argc, char **argv)
 		return (ft_putstr_fd("Usage: ./cub3D <map.cub>\n", 2), 1);
 	srand(time(NULL));
 	ft_memset(&data, 0, sizeof(t_data));
-	set_platform_icon("assets/logo.png");
 	if (parse_scene(argv[1], &data))
 		return (1);
 	if (init_player(&data))

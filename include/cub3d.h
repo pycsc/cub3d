@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:46:19 by lucas                 #+                */
+/*    Updated: 2026/05/09 16:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);
 void	draw_minimap(t_data *data);
 void	draw_hud(t_data *data);
-void	set_platform_icon(const char *path);
+void	set_platform_icon(t_data *data, const char *path);
 void	spawn_coin(t_data *data);
 void	print_error(char *msg);
 void	free_tab(char **tab);
