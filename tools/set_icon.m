@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/09 16:00:08 by lucas                  ##+              */
-/*    Updated: 2026/05/09 16:15:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 16:45:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	apply_icon(NSString *imagePath, NSString *targetPath)
 		fprintf(stderr, "Error: Could not load image\n");
 		return (1);
 	}
-	if (![[NSWorkspace sharedWorkspace] setIcon:image forFile:targetPath options:0])
+	if (![[NSWorkspace sharedWorkspace] setIcon:image forFile:targetPath \
+		options:0])
 	{
 		fprintf(stderr, "Error: Could not set icon\n");
 		return (1);

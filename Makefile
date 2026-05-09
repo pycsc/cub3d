@@ -6,7 +6,7 @@
 #    By: lucas <lucas@tsiaraso.com>                   +########+               #
 #                                                           +###+              #
 #    Created: 2026/04/23 15:00:00 by lucas                   ##+               #
-#    Updated: 2026/05/09 15:46:19 by lucas                  #+                 #
+#    Updated: 2026/05/09 16:45:00 by lucas                  #+                 #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,20 +41,11 @@ else ifeq ($(OS), Darwin)
     SET_ICON_TOOL = tools/set_icon
 endif
 
-SRCS = cub3d.c \
-			 parsing/scene_parser.c \
-			 parsing/parser_utils.c \
-			 parsing/map_parser.c \
-			 parsing/error_utils.c \
-			 parsing/player_parser.c \
-			 engine/dda_engine.c \
-			 engine/line_renderer.c \
-			 engine/frame_renderer.c \
-			 engine/player_controller.c \
-			 engine/texture_manager.c \
-			 engine/minimap_renderer.c \
-			 engine/hud_renderer.c \
-			 $(PLATFORM_SRCS)
+SRCS = cub3d.c parsing/scene_parser.c parsing/parser_utils.c \
+	parsing/map_parser.c parsing/error_utils.c parsing/player_parser.c \
+	engine/dda_engine.c engine/line_renderer.c engine/frame_renderer.c \
+	engine/player_controller.c engine/texture_manager.c \
+	engine/minimap_renderer.c engine/hud_renderer.c $(PLATFORM_SRCS)
 OBJS = $(SRCS:.c=.o)
 OBJS := $(OBJS:.m=.o)
 
@@ -74,7 +65,8 @@ $(SET_ICON_TOOL): tools/set_icon.m
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB) $(SET_ICON_TOOL)
 	@cp $(MLX_LIB) .
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl \
+		$(MLX_FLAGS) -o $(NAME)
 ifeq ($(OS), Darwin)
 	@./tools/set_icon assets/logo.png $(NAME)
 endif
