@@ -6,7 +6,7 @@
 #    By: lucas <lucas@tsiaraso.com>                   +########+               #
 #                                                           +###+              #
 #    Created: 2026/04/23 15:00:00 by lucas                   ##+               #
-#    Updated: 2026/05/08 09:30:00 by lucas                  #+                 #
+#    Updated: 2026/05/08 11:00:00 by lucas                  #+                 #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ ifeq ($(OS), Linux)
     MLX_DIR = libs/minilibx-linux
     MLX_LIB = $(MLX_DIR)/libmlx.a
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
+    PLATFORM_SRCS = engine/linux_icon.c
 else ifeq ($(OS), Darwin)
     ifeq ($(ARCH), arm64)
         MLX_DIR = libs/minilibx-mms
@@ -35,6 +36,7 @@ else ifeq ($(OS), Darwin)
 				MLX_LIB = $(MLX_DIR)/libmlx.a
     endif
     MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+    PLATFORM_SRCS = engine/macos_icon.m
 endif
 
 SRCS = cub3d.c \
@@ -45,8 +47,10 @@ SRCS = cub3d.c \
 			 engine/player_controller.c \
 			 engine/texture_manager.c \
 			 engine/minimap_renderer.c \
-			 engine/hud_renderer.c
+			 engine/hud_renderer.c \
+			 $(PLATFORM_SRCS)
 OBJS = $(SRCS:.c=.o)
+OBJS := $(OBJS:.m=.o)
 
 all: $(NAME)
 
@@ -62,8 +66,13 @@ $(GNL_LIB):
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB) $(GNL_LIB)
 	@cp $(MLX_LIB) .
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(GNL_DIR) -lgnl $(MLX_FLAGS) -o $(NAME)
+	@chmod +x scripts/set_icon.sh
+	@./scripts/set_icon.sh assets/logo.png $(NAME)
 
 %.o: %.c
+	$(CC) $(CFLAGS) -Iinclude -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(GNL_DIR) -c $< -o $@
+
+%.o: %.m
 	$(CC) $(CFLAGS) -Iinclude -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(GNL_DIR) -c $< -o $@
 
 clean:
