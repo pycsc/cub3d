@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 21:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 08:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_map_line(char *line)
 	{
 		if (line[i] != ' ' && line[i] != '0' && line[i] != '1' && \
 			line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && \
-			line[i] != 'W')
+			line[i] != 'W' && line[i] != '2')
 			return (0);
 		i++;
 	}
@@ -81,7 +81,7 @@ int	validate_map(t_data *data)
 				if (++player > 1 || !check_cell(data->map, y, x))
 					return (print_error("Invalid player position or count"), 1);
 			}
-			else if (data->map[y][x] == '0')
+			else if (data->map[y][x] == '0' || data->map[y][x] == '2')
 			{
 				if (!check_cell(data->map, y, x))
 					return (print_error("Map is not closed/surrounded by walls"), 1);

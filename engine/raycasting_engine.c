@@ -29,7 +29,7 @@ static unsigned int	get_tex_color(t_img *tex, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-static void	draw_line_textured(t_data *data, int x, int side, double pwd, double rx, double ry, int lh)
+static void	draw_line_textured(t_data *data, int x, int side, double pwd, double rx, double ry, int lh, int is_coin)
 {
 	int		tex_num;
 	double	wall_x;
@@ -65,7 +65,10 @@ static void	draw_line_textured(t_data *data, int x, int side, double pwd, double
 			my_mlx_pixel_put(&data->img, x, y, data->config.floor_col);
 		else
 		{
-			my_mlx_pixel_put(&data->img, x, y, get_tex_color(&data->tex[tex_num], tex_x, (int)tex_pos));
+			if (is_coin)
+				my_mlx_pixel_put(&data->img, x, y, 0x00FFD700);
+			else
+				my_mlx_pixel_put(&data->img, x, y, get_tex_color(&data->tex[tex_num], tex_x, (int)tex_pos));
 			tex_pos += step;
 		}
 	}
@@ -77,7 +80,8 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 	double	dd[2];
 	int		map[2];
 	int		step[2];
-	int		side;
+	int		side = 0;
+	int		is_coin = 0;
 
 	dd[0] = fabs(1 / rx);
 	dd[1] = fabs(1 / ry);
@@ -89,6 +93,11 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 	sd[1] = (ry < 0) ? (data->player.y - map[1]) * dd[1] : (map[1] + 1.0 - data->player.y) * dd[1];
 	while (data->map[map[1]][map[0]] != '1')
 	{
+		if (data->map[map[1]][map[0]] == '2')
+		{
+			is_coin = 1;
+			break ;
+		}
 		if (sd[0] < sd[1])
 		{
 			sd[0] += dd[0];
@@ -102,8 +111,12 @@ static void	perform_dda(t_data *data, double rx, double ry, int x)
 			side = 1;
 		}
 	}
-	double pwd = (side == 0) ? (map[0] - data->player.x + (1 - step[0]) / 2) / rx : (map[1] - data->player.y + (1 - step[1]) / 2) / ry;
-	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd));
+	double pwd;
+	if (side == 0)
+		pwd = (map[0] - data->player.x + (1 - step[0]) / 2) / rx;
+	else
+		pwd = (map[1] - data->player.y + (1 - step[1]) / 2) / ry;
+	draw_line_textured(data, x, side, pwd, rx, ry, (int)(600 / pwd), is_coin);
 }
 
 static void	apply_dot_filter(t_data *data)

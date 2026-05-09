@@ -6,12 +6,13 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:00:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "mlx.h"
+#include <time.h>
 
 int	close_window(t_data *data)
 {
@@ -63,6 +64,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Usage: ./cub3D <map.cub>\n", 2);
 		return (1);
 	}
+	srand(time(NULL));
 	ft_memset(&data, 0, sizeof(t_data));
 	set_platform_icon("assets/logo.png");
 	if (parse_scene(argv[1], &data))
@@ -72,6 +74,7 @@ int	main(int argc, char **argv)
 	data.health = 100;
 	data.ammo = 100;
 	data.score = 0;
+	spawn_coin(&data);
 	data.mlx = mlx_init();
 	if (!data.mlx)
 		return (print_error("Failed to initialize MiniLibX"), 1);

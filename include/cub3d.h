@@ -104,6 +104,7 @@ void	rotate_player(t_data *data, double angle);
 void	draw_minimap(t_data *data);
 void	draw_hud(t_data *data);
 void	set_platform_icon(const char *path);
+void	spawn_coin(t_data *data);
 void	print_error(char *msg);
 
 #endif
