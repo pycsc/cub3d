@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:45:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:46:19 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,6 @@ void	draw_hud(t_data *data);
 void	set_platform_icon(const char *path);
 void	spawn_coin(t_data *data);
 void	print_error(char *msg);
+void	free_tab(char **tab);
 
 #endif
