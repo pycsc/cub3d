@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 17:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:00:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	parse_scene(char *file, t_data *data)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (perror("Error opening file"), 1);
-	ft_memset(data, 0, sizeof(t_data));
 	data->config.floor_col = -1;
 	data->config.ceiling_col = -1;
 	line = get_next_line(fd);
