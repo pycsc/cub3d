@@ -37,6 +37,24 @@ int	key_release(int keycode, t_data *data)
 	return (0);
 }
 
+int	update_game(t_data *data)
+{
+	if (data->keys[KEY_W])
+		move_player(data, data->player.dir_x, data->player.dir_y);
+	if (data->keys[KEY_S])
+		move_player(data, -data->player.dir_x, -data->player.dir_y);
+	if (data->keys[KEY_A])
+		move_player(data, -data->player.plane_x, -data->player.plane_y);
+	if (data->keys[KEY_D])
+		move_player(data, data->player.plane_x, data->player.plane_y);
+	if (data->keys[KEY_LEFT])
+		rotate_player(data, -1);
+	if (data->keys[KEY_RIGHT])
+		rotate_player(data, 1);
+	render_frame(data);
+	return (0);
+}
+
 static int	init_mlx(t_data *data)
 {
 	data->mlx = mlx_init();
@@ -67,10 +85,9 @@ int	main(int argc, char **argv)
 	if (parse_scene(argv[1], &data))
 		return (1);
 	if (init_player(&data))
-		return (print_error("Failed to initialize player"), 1);
+		return (1);
 	data.health = 100;
 	data.ammo = 100;
-	data.score = 0;
 	spawn_coin(&data);
 	if (init_mlx(&data))
 		return (1);
