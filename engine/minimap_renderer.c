@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 07:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 14:45:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 14:50:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static void	draw_square(t_data *data, int x, int y, int size, int color)
+static void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < size)
+	while (i < w)
 	{
 		j = 0;
-		while (j < size)
+		while (j < h)
 		{
 			my_mlx_pixel_put(&data->img, x + i, y + j, color);
 			j++;
@@ -75,7 +75,6 @@ void	draw_minimap(t_data *data)
 	get_map_dimensions(data->map, &map_w, &map_h);
 	off[0] = 790 - (map_w * scale);
 	off[1] = 590 - (map_h * scale);
-	// Background
 	draw_rect(data, off[0] - 5, off[1] - 5, (map_w * scale) + 10, (map_h * scale) + 10, 0x11000000);
 	y = -1;
 	while (data->map[++y])
@@ -85,20 +84,16 @@ void	draw_minimap(t_data *data)
 		{
 			if (data->map[y][x] == '1')
 			{
-				// Color match: horizontal walls Orange, vertical Cyan
 				if (y % 2 == 0)
-					draw_square(data, off[0] + x * scale, off[1] + y * scale, scale - 1, 0xFF8800);
+					draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0xFF8800);
 				else
-					draw_square(data, off[0] + x * scale, off[1] + y * scale, scale - 1, 0x4ECBD4);
+					draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x4ECBD4);
 			}
 			else if (data->map[y][x] != ' ' && data->map[y][x] != '\0')
-				draw_square(data, off[0] + x * scale, off[1] + y * scale, scale - 1, 0x333333);
+				draw_rect(data, off[0] + x * scale, off[1] + y * scale, scale - 1, scale - 1, 0x333333);
 		}
 	}
-	// Player
-	draw_square(data, off[0] + data->player.x * scale - 2, \
-		off[1] + data->player.y * scale - 2, 4, 0xFFFFFF);
-	// Direction
-	draw_square(data, off[0] + (data->player.x + data->player.dir_x * 0.8) * scale - 1, \
-		off[1] + (data->player.y + data->player.dir_y * 0.8) * scale - 1, 3, 0xFF0000);
+	draw_rect(data, off[0] + data->player.x * scale - 2, off[1] + data->player.y * scale - 2, 4, 4, 0xFFFFFF);
+	draw_rect(data, off[0] + (data->player.x + data->player.dir_x * 0.8) * scale - 1, \
+		off[1] + (data->player.y + data->player.dir_y * 0.8) * scale - 1, 3, 3, 0xFF0000);
 }
