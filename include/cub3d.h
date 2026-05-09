@@ -6,7 +6,7 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 15:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:30:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:45:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,9 @@ int		init_player(t_data *data);
 int		update_game(t_data *data);
 int		load_textures(t_data *data);
 void	render_frame(t_data *data);
+void	perform_dda(t_data *data, double rx, double ry, int x);
+void	draw_line_textured(t_data *data, int x, t_dda *d);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);
 void	draw_minimap(t_data *data);
