@@ -1,103 +1,54 @@
-# CUB3D - Ray-Casting FPS Game
+# cub3D - Technical Halftone Raycaster
 
-This project has been created as part of the 42 curriculum by lutsiara
+*This project has been created as part of the 42 curriculum by lutsiara.*
 
 ## Description
+cub3D is a highly stylized 3D raycasting game inspired by the mechanics of Wolfenstein 3D. It features a unique **technical halftone aesthetic**, rendering the world as a high-precision grid of dots (2px center with 1px spacing). 
 
-A ray-casting 3D FPS engine inspired by Wolfenstein 3D. The project creates a first-person perspective view inside a maze using ray-casting algorithms, displaying textures, and providing interactive movement controls.
+The game includes a functional gameplay loop where players navigate a complex, closed technical maze to collect rotating circular coins.
 
-### Goal
-Implement a 3D graphical representation of a maze through ray-casting principles, using miniLibX for rendering and parsing .cub configuration files.
+### Key Features
+- **Dynamic Raycasting Engine**: High-performance DDA algorithm with texture mapping.
+- **Aesthetic Overlay**: Global 3x3 halftone dot-matrix pass for a distinctive "blueprint" look.
+- **Interactive Objects**: Rotating circular coins that support transparency (can see walls through them).
+- **Responsive HUD**: Pure white health and ammo bars, plus a numeric score display with custom digit rendering.
+- **Minimap**: Real-time 2D top-down view with cardinal-aligned wall coloring and player direction indicator.
+- **Cross-Platform**: Native support for Linux (X11) and macOS (Intel OpenGL / Apple Silicon Metal).
+- **Branded**: Includes custom native executable and Dock icons.
 
 ## Instructions
 
-### Requirements
-- C programming language
-- macOS or Linux
-- miniLibX library
-
-### Setup
-
-**On macOS:**
-1. Extract `minilibx_macos_metal.tgz` to your project directory
-2. Navigate to the minilibx directory
-3. Compile with: `make`
-
-**On Linux:**
-1. Extract `minilibx-linux.tgz` to your project directory
-2. Navigate to the minilibx directory
-3. Compile with: `make`
-
 ### Compilation
-```
-make
+The project uses a specialized cross-platform Makefile:
+```bash
+make        # Compile the project
+make re     # Recompile everything
+make clean  # Remove object files
+make fclean # Remove executable and libraries
 ```
 
-### Running
+### Execution
+Run the program with a valid `.cub` scene description file:
+```bash
+./cub3D maps/test.cub
 ```
-./cub3D maps/sample.cub
-``` 
 
-Example map file format:
-```
-NO ./texture_north.png
-SO ./texture_south.png
-WE ./texture_west.png
-EA ./texture_east.png
-F 220,100,0
-C 225,30,0
-111111
-100101
-101001
-1100N1
-111111
-```
+### Controls
+- **W / A / S / D**: Move through the maze.
+- **Left / Right Arrows**: Rotate the camera view.
+- **ESC / Red Cross**: Quit the game cleanly.
 
 ## Resources
+- **Raycasting**: Lodev's Raycasting Tutorial.
+- **MiniLibX**: 42's internal graphics library documentation.
+- **Icons**: macOS Cocoa NSWorkspace API for native branding.
 
-- [Wolfenstein 3D Documentation](http://users.atw.hu/wolf3d/)
-- [Ray Casting Algorithm Tutorials](https://lodev.org/cgtutor/raycasting.html)
-- [miniLibX Documentation](https://github.com/42Paris/minilibx)
-- [42 Subject on Cub3D](https://github.com/42Paris/cub3d)
+### AI Usage
+AI was used strategically for:
+- Refactoring the raycasting engine into modular, constraint-compliant files.
+- Implementing the mathematical ellipsoid rotation for the coin visuals.
+- Designing the custom pixel-based numeric HUD renderer.
+- Automating the 42-header compliance and code style audits.
 
-## Technical Overview
-
-### Core Components
-- **Map Parsing**: Parse .cub files with textures, colors, and level design
-- **Ray Casting**: Calculate 3D wall projections from 2D map
-- **Rendering**: MiniLibX window generation with textures
-- **Input Handling**: Keyboard controls (WASD + arrows) and mouse
-
-### Bonus Features
-- Wall collision detection
-- Minimap system  
-- Doors with opening/closing
-- Animated sprites
-- Mouse rotation
-
-## Architecture
-
-```
-cub3d/
-├── cub3d.c          # Main program and initialization
-├── parsing/         # Map parsing and .cub file handling
-├── engine/          # Raycasting and rendering logic
-├── mlx/            # MiniLibX wrapper functions
-├── include/        # Header files
-├── maps/           # Test maps
-└── textures/       # Texture images
-```
-
-### Key Algorithms
-1. **DDA Algorithm**: Used for efficient ray-wall intersection
-2. **Wall Strip Calculation**: Generate 3D wall segments
-3. **Texture Mapping**: Apply textures based on wall side and distance
-4. **Line Drawing**: Draw vertical wall strips
-
-## Controls
-- **W/S**: Move forward/backward
-- **A/D**: Strafe left/right  
-- **Left/Right Arrow**: Turn view angle
-- **Mouse**: Rotate view angle (bonus)
-- **ESC**: Close application
-- **Window Close Button**: Close application
+---
+*Developed with rigor and precision in C.*

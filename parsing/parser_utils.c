@@ -6,18 +6,11 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/04/23 19:00:00 by lucas                  ##+              */
-/*    Updated: 2026/05/08 06:47:10 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:46:19 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	print_error(char *msg)
-{
-	ft_putstr_fd("Error\n", 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
-}
 
 int	is_config_line(char *line)
 {
@@ -60,21 +53,7 @@ static int	parse_rgb(char **tab)
 			return (-1);
 		i++;
 	}
-	if (i != 3)
-		return (-1);
-	return (rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
-}
-
-static void	free_tab(char **tab)
-{
-	int	i;
-
-	if (!tab)
-		return ;
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
+	return ((i != 3) ? -1 : (rgb[0] << 16 | rgb[1] << 8 | rgb[2]));
 }
 
 static int	set_color(int *col, char *line)

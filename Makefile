@@ -6,7 +6,7 @@
 #    By: lucas <lucas@tsiaraso.com>                   +########+               #
 #                                                           +###+              #
 #    Created: 2026/04/23 15:00:00 by lucas                   ##+               #
-#    Updated: 2026/05/09 15:45:00 by lucas                  #+                 #
+#    Updated: 2026/05/09 15:46:19 by lucas                  #+                 #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,8 @@ SRCS = cub3d.c \
 			 parsing/scene_parser.c \
 			 parsing/parser_utils.c \
 			 parsing/map_parser.c \
+			 parsing/error_utils.c \
+			 parsing/player_parser.c \
 			 engine/dda_engine.c \
 			 engine/line_renderer.c \
 			 engine/frame_renderer.c \
