@@ -6,24 +6,14 @@
 /*    By: lucas <lucas@tsiaraso.com>                  +########+              */
 /*                                                          +###+             */
 /*    Created: 2026/05/08 09:30:00 by lucas                  ##+              */
-/*    Updated: 2026/05/09 15:15:00 by lucas                 #+                */
+/*    Updated: 2026/05/09 15:45:00 by lucas                 #+                */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "mlx.h"
 
-static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= 800 || y < 0 || y >= 600)
-		return ;
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-static void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
+void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
 {
 	int	i;
 	int	j;
@@ -44,19 +34,19 @@ static void	draw_rect(t_data *data, int x, int y, int w, int h, int color)
 static void	draw_digit(t_data *data, int x, int y, int digit)
 {
 	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x, y, 10, 2, 0xFFFFFF); // top
+		draw_rect(data, x, y, 10, 2, 0xFFFFFF);
 	if (digit == 0 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y, 2, 10, 0xFFFFFF); // top-left
+		draw_rect(data, x, y, 2, 10, 0xFFFFFF);
 	if (digit == 0 || digit == 1 || digit == 2 || digit == 3 || digit == 4 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x + 8, y, 2, 10, 0xFFFFFF); // top-right
+		draw_rect(data, x + 8, y, 2, 10, 0xFFFFFF);
 	if (digit == 2 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y + 9, 10, 2, 0xFFFFFF); // middle
+		draw_rect(data, x, y + 9, 10, 2, 0xFFFFFF);
 	if (digit == 0 || digit == 2 || digit == 6 || digit == 8)
-		draw_rect(data, x, y + 10, 2, 10, 0xFFFFFF); // bottom-left
+		draw_rect(data, x, y + 10, 2, 10, 0xFFFFFF);
 	if (digit == 0 || digit == 1 || digit == 3 || digit == 4 || digit == 5 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
-		draw_rect(data, x + 8, y + 10, 2, 10, 0xFFFFFF); // bottom-right
+		draw_rect(data, x + 8, y + 10, 2, 10, 0xFFFFFF);
 	if (digit == 0 || digit == 2 || digit == 3 || digit == 5 || digit == 6 || digit == 8 || digit == 9)
-		draw_rect(data, x, y + 18, 10, 2, 0xFFFFFF); // bottom
+		draw_rect(data, x, y + 18, 10, 2, 0xFFFFFF);
 }
 
 static void	draw_number(t_data *data, int x, int y, int num)
@@ -83,14 +73,12 @@ void	draw_hud(t_data *data)
 	draw_rect(data, 33, 25, 4, 20, 0xFFFFFF);
 	draw_rect(data, 60, 30, 100, 12, 0x222222);
 	draw_rect(data, 60, 30, data->health, 12, 0xFFFFFF);
-
 	draw_rect(data, 20, 60, 30, 30, 0x00000000);
 	draw_rect(data, 25, 65, 3, 15, 0xFFFFFF);
 	draw_rect(data, 31, 65, 3, 15, 0xFFFFFF);
 	draw_rect(data, 37, 65, 3, 15, 0xFFFFFF);
 	draw_rect(data, 60, 70, 100, 12, 0x222222);
 	draw_rect(data, 60, 70, data->ammo, 12, 0xFFFFFF);
-
 	draw_rect(data, 680, 20, 30, 30, 0x00000000);
 	draw_dollar(data, 680, 20, 0xFFFFFF);
 	draw_number(data, 770, 25, data->score);

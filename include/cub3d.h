@@ -118,6 +118,7 @@ void	render_frame(t_data *data);
 void	perform_dda(t_data *data, double rx, double ry, int x);
 void	draw_line_textured(t_data *data, int x, t_dda *d);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void	draw_rect(t_data *data, int x, int y, int w, int h, int color);
 void	move_player(t_data *data, double dx, double dy);
 void	rotate_player(t_data *data, double angle);
 void	draw_minimap(t_data *data);
