@@ -24,6 +24,10 @@
 #  define OPEN_MAX 1024
 # endif
 
+# define ft_strlen gnl_strlen
+# define ft_strchr gnl_strchr
+# define ft_strjoin gnl_strjoin
+
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);

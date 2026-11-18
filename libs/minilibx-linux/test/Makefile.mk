@@ -5,7 +5,7 @@ INCLIB=$(INC)/../lib
 
 UNAME := $(shell uname)
 
-CFLAGS= -I$(INC) -O3 -I.. -g
+CFLAGS= -I$(INC) -O3 -std=gnu17 -I.. -g -Wno-error -Wno-implicit-function-declaration -Wno-int-conversion
 
 NAME= mlx-test
 SRC = main.c
